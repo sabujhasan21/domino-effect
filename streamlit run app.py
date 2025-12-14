@@ -40,7 +40,7 @@ st.markdown('<div class="sub">Soft glowing spike → love shape → emotion</div
 svg_html = """
 <div class="wrap">
   <div class="card">
-    <svg width="700" height="360" viewBox="0 0 700 360">
+    <svg width="1200" height="420" viewBox="0 0 1200 420">
 
       <!-- Life support ECG flatline + spike -->
       <path id="pulse"
@@ -55,17 +55,17 @@ svg_html = """
            C390 210 420 210 440 180
            L620 180"
         fill="none"
-        stroke="#ff3b6f"
-        stroke-width="4"
+        stroke="#ff9ab8"
+        stroke-width="2.5"
         filter="url(#glow)">
         <animate attributeName="stroke-dasharray"
-          from="0,900" to="900,0" dur="2.5s" repeatCount="indefinite" />
+          from="0,1400" to="1400,0" dur="4s" repeatCount="indefinite" />
       </path>
 
       <!-- Glow effect -->
       <defs>
         <filter id="glow">
-          <feGaussianBlur stdDeviation="5" result="blur" />
+          <feGaussianBlur stdDeviation="8" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
@@ -74,11 +74,11 @@ svg_html = """
       </defs>
 
       <!-- Emotional text -->
-      <text x="350" y="295" text-anchor="middle"
+      <text x="600" y="330" text-anchor="middle"
             font-size="24" font-weight="500" fill="#ffe4e6">
         I am Sorry, Please I want you in every time.
       </text>
-      <text x="350" y="330" text-anchor="middle"
+      <text x="600" y="370" text-anchor="middle"
             font-size="30" font-weight="800" fill="#ff7aa2">
         I love you sona
       </text>
