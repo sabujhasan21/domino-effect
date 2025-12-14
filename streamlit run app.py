@@ -1,7 +1,13 @@
+import streamlit as st
+from streamlit.components.v1 import html
+
+st.set_page_config(page_title="Domino Chain Reaction", layout="wide")
+
+html_code = """
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-<meta charset="UTF-8">
+<meta charset='UTF-8'>
 <title>Domino Chain Reaction Text</title>
 <style>
 html,body{
@@ -24,33 +30,24 @@ html,body{
   border-radius:4px;
   box-shadow:0 10px 20px rgba(0,0,0,.7);
   transform-origin: bottom center;
-  transform: rotateX(0deg);
 }
-.domino.fall{
-  animation: fall .6s ease forwards;
-}
-@keyframes fall{
-  to{ transform: rotateX(-85deg); }
-}
+.domino.fall{ animation: fall .6s ease forwards; }
+@keyframes fall{ to{ transform: rotateX(-85deg); } }
 .empty{ visibility:hidden; }
 </style>
 </head>
 <body>
-<div class="scene">
-  <div class="board" id="board"></div>
+<div class='scene'>
+  <div class='board' id='board'></div>
 </div>
 <script>
-// TEXT PATTERN (1 = domino)
 const pattern = [
-// SORRY
 "1111101111101111000111110",
 "1000001000101000100000010",
 "1111101111101111000111110",
 "0000100000100000100000100",
 "1111101111101111000111110",
-// space
 "0000000000000000000000000",
-// I LOVE YOU SONA
 "11111001001011110001011111001001011110",
 "00100001001010000001010000001001010000",
 "00100001001011100001011100001001011100",
@@ -67,7 +64,7 @@ pattern.forEach(row=>{
     if(cell==='1'){
       d.className='domino';
       setTimeout(()=>d.classList.add('fall'),delay);
-      delay+=70; // chain reaction speed
+      delay+=70;
     } else {
       d.className='domino empty';
     }
@@ -77,3 +74,6 @@ pattern.forEach(row=>{
 </script>
 </body>
 </html>
+"""
+
+html(html_code, height=900)
