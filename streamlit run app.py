@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit.components.v1 import html
 
-st.set_page_config(page_title="Still Beating – Clean", layout="wide")
+st.set_page_config(page_title="Life Support – Visible", layout="wide")
 
 html_content = """
 <!DOCTYPE html>
@@ -12,7 +12,7 @@ html_content = """
 html, body {
   margin: 0;
   padding: 0;
-  background: #000000;
+  background: #000;
   overflow: hidden;
 }
 #scene {
@@ -26,37 +26,35 @@ svg {
 #pulse {
   fill: none;
   stroke: #ff9bb5;
-  stroke-width: 2;
-  filter: drop-shadow(0 0 10px rgba(255,155,181,0.55));
+  stroke-width: 3;
+  filter: drop-shadow(0 0 12px rgba(255,155,181,0.8));
 }
 #text {
   position: absolute;
-  bottom: 14%;
+  bottom: 12%;
   width: 100%;
   text-align: center;
   font-family: 'Segoe UI', sans-serif;
 }
 .line {
-  font-size: 24px;
+  font-size: 26px;
   color: #ffdbe7;
   opacity: 0;
-  transition: opacity 2.5s ease;
+  transition: opacity 2s ease;
 }
 #line2 {
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 700;
-  color: #ff8fa8;
-  margin-top: 8px;
+  color: #ff7fa3;
+  margin-top: 10px;
 }
-.show {
-  opacity: 1;
-}
+.show { opacity: 1; }
 </style>
 </head>
 <body>
 <div id="scene">
   <svg viewBox="0 0 1200 400" preserveAspectRatio="none">
-    <path id="pulse" />
+    <path id="pulse" d="M0 200 L1200 200" />
   </svg>
   <div id="text">
     <div id="line1" class="line">I am Sorry, Please I want you in every time.</div>
@@ -75,39 +73,46 @@ const l1 = document.getElementById('line1');
 const l2 = document.getElementById('line2');
 
 let x = 0;
-let flatTime = 0;
-let phase = 'flat';
+let mode = 'flat';
+let frame = 0;
 
-function draw(){
-  let d = 'M0 200 ';
+function animate(){
+  let d = `M0 200 `;
 
-  if(phase === 'flat'){
+  if(mode === 'flat'){
     d += `L${x} 200`;
-    flatTime++;
-    if(flatTime > 240){ // ~4s
-      phase = 'spike';
-      beep.volume = 0.12;
+    frame++;
+    if(frame > 180){ // ~3s flatline
+      mode = 'spike';
+      frame = 0;
+      beep.volume = 0.15;
       beep.play();
-      setTimeout(()=>l1.classList.add('show'),1000);
-      setTimeout(()=>l2.classList.add('show'),3000);
+      setTimeout(()=>l1.classList.add('show'),800);
+      setTimeout(()=>l2.classList.add('show'),2400);
     }
   }
 
-  if(phase === 'spike'){
-    d += `L${x-40} 200 ` +
-         `L${x-30} 140 ` +
-         `L${x-20} 260 ` +
-         `L${x-10} 200 `;
+  if(mode === 'spike'){
+    d += `L${x-60} 200 ` +
+         `L${x-45} 140 ` +
+         `L${x-30} 260 ` +
+         `L${x-15} 200 `;
   }
 
   path.setAttribute('d', d);
-  x += 6;
+  x += 10;
 
-  if(x > 1200){ x = 0; flatTime = 0; phase = 'flat'; l1.classList.remove('show'); l2.classList.remove('show'); }
+  if(x > 1200){
+    x = 0;
+    mode = 'flat';
+    frame = 0;
+    l1.classList.remove('show');
+    l2.classList.remove('show');
+  }
 
-  requestAnimationFrame(draw);
+  requestAnimationFrame(animate);
 }
-requestAnimationFrame(draw);
+requestAnimationFrame(animate);
 </script>
 </body>
 </html>
