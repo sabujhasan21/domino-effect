@@ -1,107 +1,119 @@
 import streamlit as st
 from streamlit.components.v1 import html
 
-st.set_page_config(page_title="Glowing Love Spike", layout="wide")
+st.set_page_config(page_title="Life Support Love Intro", layout="wide")
 
-st.markdown("""
+html_content = """
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <style>
-body {
-    background: radial-gradient(circle at center, #02040a, #000000);
-    animation: breathe 6s infinite alternate;
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  overflow: hidden;
 }
-@keyframes breathe {
-    from { background-color: #000000; }
-    to { background-color: #040414; }
+#scene {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #02040a, #000);
 }
-.main-title {
-    display:none;
+canvas {
+  position: absolute;
+  inset: 0;
 }
-.sub {
-    display:none;
+#ecg {
+  position: absolute;
+  inset: 0;
 }
-.wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+#text {
+  position: absolute;
+  bottom: 12%;
+  width: 100%;
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+  color: #ffdbe7;
 }
-.card {
-    background: transparent;
-    border-radius: 0;
-    padding: 0;
-    box-shadow: none;
+#line1 {
+  font-size: 22px;
+  opacity: 0;
+}
+#line2 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #ff8fb1;
+  opacity: 0;
+}
+.glow {
+  filter: drop-shadow(0 0 12px #ff8fb1);
 }
 </style>
-""", unsafe_allow_html=True)
-
-st.markdown('<div class="main-title">💗 For You</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub">Soft glowing spike → love shape → emotion</div>', unsafe_allow_html=True)
-
-svg_html = """
-<div class="wrap">
-  <div class="card">
-    <svg width="1200" height="420" viewBox="0 0 1200 420">
-
-      <!-- Life support ECG flatline + spike -->
-      <path id="pulse"
-        d="M20 210 
-           L500 210 
-           L520 210 
-           L540 140 
-           L560 300 
-           L580 210 
-           L700 210
-           C740 170 800 170 840 210
-           C880 250 940 250 980 210
-           L1180 210"
-        fill="none"
-        stroke="#ffb3c7"
-        stroke-width="2"
-        filter="url(#glow)">
-        <animate attributeName="stroke-dasharray"
-          from="0,1600" to="1600,0" dur="6s" repeatCount="indefinite" />
-      </path>
-
-      <!-- Glow effect -->
-      <defs>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="10" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-
-      <!-- Emotional text -->
-      <text x="600" y="330" text-anchor="middle"
-            font-size="26" font-weight="400" fill="#ffdbe7" opacity="0">
-        I am Sorry, Please I want you in every time.
-        <animate attributeName="opacity" from="0" to="1" begin="3s" dur="3s" fill="freeze" />
-      </text>
-      <text x="600" y="370" text-anchor="middle"
-            font-size="32" font-weight="700" fill="#ff8fb1" opacity="0">
-        I love you sona
-        <animate attributeName="opacity" from="0" to="1" begin="4s" dur="3s" fill="freeze" />
-      </text>
-
-    </svg>
+</head>
+<body>
+<div id="scene">
+  <canvas id="stars"></canvas>
+  <svg id="ecg" viewBox="0 0 1200 400" preserveAspectRatio="none">
+    <path id="pulse" fill="none" stroke="#ffb3c7" stroke-width="2" />
+  </svg>
+  <div id="text">
+    <div id="line1">I am Sorry, Please I want you in every time.</div>
+    <div id="line2">I love you sona</div>
   </div>
 </div>
+
+<audio id="beep" preload="auto">
+  <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
+</audio>
+
+<script>
+/* STAR BACKGROUND */
+const c = document.getElementById('stars');
+const ctx = c.getContext('2d');
+let w,h,stars=[];
+function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
+window.onresize=resize;resize();
+for(let i=0;i<120;i++) stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.5});
+function drawStars(){ctx.clearRect(0,0,w,h);ctx.fillStyle='#fff';stars.forEach(s=>{ctx.globalAlpha=Math.random();ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,6.28);ctx.fill()});requestAnimationFrame(drawStars)}
+drawStars();
+
+/* ECG PATH */
+const path = document.getElementById('pulse');
+const beep = document.getElementById('beep');
+let t = 0;
+function ecg(){
+  t++;
+  let d = 'M0 200 ';
+  if(t<180){ d+='L1200 200'; }
+  else{
+    d+='L300 200 L340 200 L360 120 L380 300 L400 200 ';
+    d+='C450 160 520 160 580 200 C640 240 700 240 760 200 L1200 200';
+    document.body.style.background='#050014';
+    beep.volume=0.15;beep.play();
+    showText();
+    t=0;
+  }
+  path.setAttribute('d',d);
+  path.classList.add('glow');
+  requestAnimationFrame(ecg);
+}
+ecqgStart = setTimeout(()=>requestAnimationFrame(ecg),3000);
+
+/* TEXT EFFECT */
+function showText(){
+  const l1=document.getElementById('line1');
+  const l2=document.getElementById('line2');
+  l1.style.opacity=1;l2.style.opacity=1;
+  type(l1);setTimeout(()=>type(l2),2000);
+}
+function type(el){
+  const txt=el.innerText;el.innerText='';let i=0;
+  const iv=setInterval(()=>{el.innerText+=txt[i++];if(i>=txt.length)clearInterval(iv)},60);
+}
+</script>
+</body>
+</html>
 """
 
-html(svg_html, height=420)
-
-st.markdown("""
----
-### Animation Meaning
-- 💫 Soft glowing moving spike
-- 💓 Middle e spike naturally **love curve** banay
-- ❤️ Emotion-focused minimal design
-
-Chaile ami aro add korte pari:
-- Pulse speed emotion wise
-- Typing text animation
-- Background floating particles
-- Auto full-screen love intro
-""")
+html(html_content, height=800)
