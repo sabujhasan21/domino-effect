@@ -6,30 +6,30 @@ st.set_page_config(page_title="Glowing Love Spike", layout="wide")
 st.markdown("""
 <style>
 body {
-    background: radial-gradient(circle at top, #0b1020, #060814);
+    background: radial-gradient(circle at center, #02040a, #000000);
+    animation: breathe 6s infinite alternate;
+}
+@keyframes breathe {
+    from { background-color: #000000; }
+    to { background-color: #040414; }
 }
 .main-title {
-    font-size: 2.6rem;
-    font-weight: 800;
-    text-align: center;
-    color: #ffd1dc;
-    margin-bottom: 0.3rem;
+    display:none;
 }
 .sub {
-    text-align: center;
-    color: #a5b4fc;
-    margin-bottom: 2rem;
+    display:none;
 }
 .wrap {
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 .card {
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(14px);
-    border-radius: 28px;
-    padding: 40px 60px;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.45);
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -44,28 +44,28 @@ svg_html = """
 
       <!-- Life support ECG flatline + spike -->
       <path id="pulse"
-        d="M40 180 
-           L200 180 
-           L215 180 
-           L230 110 
-           L245 260 
-           L260 180 
-           L300 180
-           C320 150 350 150 370 180
-           C390 210 420 210 440 180
-           L620 180"
+        d="M20 210 
+           L500 210 
+           L520 210 
+           L540 140 
+           L560 300 
+           L580 210 
+           L700 210
+           C740 170 800 170 840 210
+           C880 250 940 250 980 210
+           L1180 210"
         fill="none"
-        stroke="#ff9ab8"
-        stroke-width="2.5"
+        stroke="#ffb3c7"
+        stroke-width="2"
         filter="url(#glow)">
         <animate attributeName="stroke-dasharray"
-          from="0,1400" to="1400,0" dur="4s" repeatCount="indefinite" />
+          from="0,1600" to="1600,0" dur="6s" repeatCount="indefinite" />
       </path>
 
       <!-- Glow effect -->
       <defs>
         <filter id="glow">
-          <feGaussianBlur stdDeviation="8" result="blur" />
+          <feGaussianBlur stdDeviation="10" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
@@ -75,12 +75,14 @@ svg_html = """
 
       <!-- Emotional text -->
       <text x="600" y="330" text-anchor="middle"
-            font-size="24" font-weight="500" fill="#ffe4e6">
+            font-size="26" font-weight="400" fill="#ffdbe7" opacity="0">
         I am Sorry, Please I want you in every time.
+        <animate attributeName="opacity" from="0" to="1" begin="3s" dur="3s" fill="freeze" />
       </text>
       <text x="600" y="370" text-anchor="middle"
-            font-size="30" font-weight="800" fill="#ff7aa2">
+            font-size="32" font-weight="700" fill="#ff8fb1" opacity="0">
         I love you sona
+        <animate attributeName="opacity" from="0" to="1" begin="4s" dur="3s" fill="freeze" />
       </text>
 
     </svg>
