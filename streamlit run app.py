@@ -1,28 +1,33 @@
 import streamlit as st
 from streamlit.components.v1 import html
 
-st.set_page_config(page_title="Domino Chain Reaction", layout="wide")
+st.set_page_config(page_title="🎥 Domino Chain + Camera Move", layout="wide")
 
 html_code = """
 <!DOCTYPE html>
-<html lang='en'>
+<html>
 <head>
 <meta charset='UTF-8'>
-<title>Domino Chain Reaction Text</title>
 <style>
 html,body{
   margin:0; padding:0; width:100%; height:100%; overflow:hidden;
-  background: radial-gradient(circle at top,#0b0b0b,#000);
+  background:#000;
 }
 .scene{
   width:100vw; height:100vh;
-  display:flex; align-items:center; justify-content:center;
+  perspective:1400px;
+  overflow:hidden;
+}
+.camera{
+  width:100%; height:100%;
+  transform-style: preserve-3d;
+  animation: cameraMove 16s ease-in-out forwards;
 }
 .board{
   display:grid;
   grid-template-columns: repeat(60, 18px);
   gap:6px;
-  perspective:1200px;
+  transform: rotateX(70deg) translateY(200px);
 }
 .domino{
   width:18px; height:60px;
@@ -34,11 +39,19 @@ html,body{
 .domino.fall{ animation: fall .6s ease forwards; }
 @keyframes fall{ to{ transform: rotateX(-85deg); } }
 .empty{ visibility:hidden; }
+
+@keyframes cameraMove{
+  0%{ transform: translateZ(0px); }
+  60%{ transform: translateZ(300px); }
+  100%{ transform: rotateX(90deg) translateZ(400px); }
+}
 </style>
 </head>
 <body>
 <div class='scene'>
-  <div class='board' id='board'></div>
+  <div class='camera'>
+    <div class='board' id='board'></div>
+  </div>
 </div>
 <script>
 const pattern = [
@@ -64,7 +77,7 @@ pattern.forEach(row=>{
     if(cell==='1'){
       d.className='domino';
       setTimeout(()=>d.classList.add('fall'),delay);
-      delay+=70;
+      delay+=60;
     } else {
       d.className='domino empty';
     }
