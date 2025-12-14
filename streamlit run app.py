@@ -42,25 +42,30 @@ svg_html = """
   <div class="card">
     <svg width="700" height="360" viewBox="0 0 700 360">
 
-      <!-- Glowing ECG line -->
+      <!-- Life support ECG flatline + spike -->
       <path id="pulse"
-        d="M50 180 L150 180 L180 130 L210 240 L240 180 L300 180
-           C320 140 360 140 380 180
-           C400 220 440 220 460 180
-           L560 180"
+        d="M40 180 
+           L200 180 
+           L215 180 
+           L230 110 
+           L245 260 
+           L260 180 
+           L300 180
+           C320 150 350 150 370 180
+           C390 210 420 210 440 180
+           L620 180"
         fill="none"
-        stroke="#ff5c8a"
+        stroke="#ff3b6f"
         stroke-width="4"
-        filter="url(#glow)"
-        stroke-dasharray="6 10">
-        <animate attributeName="stroke-dashoffset"
-          from="0" to="-200" dur="2s" repeatCount="indefinite" />
+        filter="url(#glow)">
+        <animate attributeName="stroke-dasharray"
+          from="0,900" to="900,0" dur="2.5s" repeatCount="indefinite" />
       </path>
 
       <!-- Glow effect -->
       <defs>
         <filter id="glow">
-          <feGaussianBlur stdDeviation="4" result="blur" />
+          <feGaussianBlur stdDeviation="5" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
@@ -68,13 +73,13 @@ svg_html = """
         </filter>
       </defs>
 
-      <!-- Love text -->
-      <text x="350" y="290" text-anchor="middle"
-            font-size="26" font-weight="600" fill="#ffe4e6">
+      <!-- Emotional text -->
+      <text x="350" y="295" text-anchor="middle"
+            font-size="24" font-weight="500" fill="#ffe4e6">
         I am Sorry, Please I want you in every time.
       </text>
-      <text x="350" y="325" text-anchor="middle"
-            font-size="28" font-weight="800" fill="#ff8fab">
+      <text x="350" y="330" text-anchor="middle"
+            font-size="30" font-weight="800" fill="#ff7aa2">
         I love you sona
       </text>
 
