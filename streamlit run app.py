@@ -1,96 +1,92 @@
 import streamlit as st
 from streamlit.components.v1 import html
 
-st.set_page_config(page_title="❤️ Heart + ECG Spike Text ❤️", layout="wide")
+st.set_page_config(page_title="Heartbeat Text", layout="wide")
 
-html_code = """
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset='UTF-8'>
-<title>Heart ECG Text on Spike</title>
+st.markdown("""
 <style>
-html,body{
-  margin:0; padding:0; width:100%; height:100%; background:black; overflow:hidden;
-  font-family: Arial, sans-serif;
+body {
+    background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
 }
-#container{
-  display:flex; justify-content: space-between; align-items:center;
-  width:90vw; height:80vh; margin:auto; top:10%;
+.main-title {
+    font-size: 3rem;
+    font-weight: 800;
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
 }
-#heart-svg{
-  width:40%; height:100%;
+.sub {
+    text-align: center;
+    color: #c7d2fe;
+    margin-bottom: 2rem;
 }
-#heart{
-  fill:#ff4d6d;
-  transform-origin: center center;
-  animation: heartbeat 1s infinite;
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
 }
-@keyframes heartbeat{
-  0% { transform: scale(1); }
-  25% { transform: scale(1.1); }
-  50% { transform: scale(1); }
-  75% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-#ecg-svg{
-  width:55%; height:100%;
-}
-#text {
-  fill:#ff4d6d;
-  font-size:24px;
-  font-weight:bold;
-  text-shadow:0 0 5px #ff4d6d;
+.card {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 </style>
-</head>
-<body>
-<div id="container">
-  <!-- Left Heart -->
-  <svg id="heart-svg" viewBox="0 0 200 200">
-    <path id="heart" d="M100 180 C20 120, 40 40, 100 70 C160 40, 180 120, 100 180"/>
-  </svg>
+""", unsafe_allow_html=True)
 
-  <!-- Right ECG Spike -->
-  <svg id="ecg-svg" viewBox="0 0 800 200">
-    <path id="wave" fill="none" stroke="#ff4d6d" stroke-width="3"
-          d="M0,100 L50,100 L60,60 L70,140 L80,100 L150,100 L160,80 L170,120 L180,100
-             L250,100 L260,60 L270,140 L280,100 L350,100 L360,70 L370,130 L380,100 L450,100
-             L460,50 L470,150 L480,100 L550,100 L560,60 L570,140 L580,100 L650,100 L660,60
-             L670,140 L680,100 L750,100 L760,70 L770,130 L780,100"
-          stroke-dasharray="1000" stroke-dashoffset="1000"/>
-    <text id="text"><textPath href="#wave" startOffset="0%">SORRY</textPath></text>
-  </svg>
+st.markdown('<div class="main-title">❤️ Heartbeat Text Generator</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub">Heart theke ber hobe ECG spike → oi spike diye text border draw hobe</div>', unsafe_allow_html=True)
+
+text = st.text_input("Text dao", "LOVE")
+
+svg_html = f"""
+<div class="container">
+  <div class="card">
+    <svg width="600" height="300" viewBox="0 0 600 300">
+      <!-- Heart -->
+      <image href="https://upload.wikimedia.org/wikipedia/commons/8/88/Heart_anatomy_icon.svg"
+             x="10" y="60" width="140" height="140" />
+
+      <!-- ECG path -->
+      <path id="ecg"
+        d="M150 150 L200 150 L220 120 L240 190 L260 150 L300 150"
+        fill="none" stroke="#ff4d6d" stroke-width="4">
+        <animate attributeName="stroke-dasharray"
+          from="0,500" to="500,0" dur="1.5s" repeatCount="indefinite" />
+      </path>
+
+      <!-- Text path -->
+      <defs>
+        <path id="textBorder"
+          d="M320 80 Q420 20 520 80 Q580 150 520 220 Q420 280 320 220 Q260 150 320 80 Z" />
+      </defs>
+
+      <text font-size="32" fill="#ffffff" font-weight="700">
+        <textPath href="#textBorder" startOffset="0%">
+          {text} • {text} • {text} • {text} •
+          <animate attributeName="startOffset" from="0%" to="100%" dur="6s" repeatCount="indefinite" />
+        </textPath>
+      </text>
+    </svg>
+  </div>
 </div>
-
-<script>
-const wave = document.getElementById('wave');
-const textPath = document.querySelector('textPath');
-const messages = ["SORRY","I WANT TO SEE YOU","I AM REALLY SORRY","I LOVE YOU SONA ❤️"];
-let idx = 0;
-
-// Animate wave draw
-setTimeout(()=>{
-    wave.style.transition = "stroke-dashoffset 4s linear";
-    wave.style.strokeDashoffset = 0;
-}, 500);
-
-// Animate text along spike
-function animateText(){
-    if(idx < messages.length){
-        textPath.textContent = messages[idx];
-        let offset = 0;
-        const interval = setInterval(()=>{
-            offset += 2; // move text along path
-            textPath.setAttribute('startOffset', offset+'%');
-            if(offset>=100){ clearInterval(interval); idx++; setTimeout(animateText, 500); }
-        },30);
-    }
-}
-setTimeout(animateText, 600);
-</script>
-</body>
-</html>
 """
 
-html(html_code, height=700)
+html(svg_html, height=360)
+
+st.markdown("""
+---
+### Features
+- ❤️ Heart left side e
+- 📈 Heartbeat (ECG) spike animation
+- ✍️ ECG flow theke text border create
+- ✨ Glassmorphism modern UI
+
+Next step e ami chaile:
+- Real audio-synced heartbeat
+- Custom font & color picker
+- SVG export / video export
+- Mobile responsive version
+""")
