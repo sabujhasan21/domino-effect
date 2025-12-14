@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit.components.v1 import html
 
-st.set_page_config(page_title="❤️ Domino Effect ❤️", layout="wide")
+st.set_page_config(page_title="❤️ Domino Text Effect ❤️", layout="wide")
 
 html_code = """
 <!DOCTYPE html>
@@ -14,83 +14,89 @@ html, body {
     font-family: 'Segoe UI', sans-serif;
 }
 .scene {
-    position: relative;
     width: 100vw;
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.domino-container {
-    position: absolute;
-    bottom: 20%;
+.word {
     display: flex;
-    gap: 14px;
+    gap: 10px;
+    position: absolute;
+    opacity: 0;
+    animation: show 1s ease forwards;
+}
+.word:nth-child(1) { animation-delay: 0.5s; }
+.word:nth-child(2) { animation-delay: 3s; }
+.word:nth-child(3) { animation-delay: 6s; }
+.word:nth-child(4) { animation-delay: 9s; }
+
+.letter {
+    display: grid;
+    grid-template-columns: repeat(5, 14px);
+    grid-gap: 4px;
 }
 .domino {
-    width: 18px;
-    height: 90px;
-    background: linear-gradient(180deg, #fff, #ddd);
-    border-radius: 6px;
-    transform-origin: bottom center;
-    animation: fall 0.8s ease-in-out forwards;
+    width: 14px;
+    height: 40px;
+    background: linear-gradient(180deg, #ffffff, #dcdcdc);
+    border-radius: 4px;
+    transform-origin: bottom;
+    animation: fall 0.6s ease forwards;
 }
-.domino:nth-child(1) { animation-delay: 0.5s; }
-.domino:nth-child(2) { animation-delay: 0.9s; }
-.domino:nth-child(3) { animation-delay: 1.3s; }
-.domino:nth-child(4) { animation-delay: 1.7s; }
-.domino:nth-child(5) { animation-delay: 2.1s; }
-.domino:nth-child(6) { animation-delay: 2.5s; }
-.domino:nth-child(7) { animation-delay: 2.9s; }
-.domino:nth-child(8) { animation-delay: 3.3s; }
-.domino:nth-child(9) { animation-delay: 3.7s; }
-.domino:nth-child(10){ animation-delay: 4.1s; }
+.domino.empty { visibility: hidden; }
 
 @keyframes fall {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(-80deg); }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-85deg); }
 }
-
-.text {
-    position: absolute;
-    font-size: 64px;
-    font-weight: 700;
-    color: #ffffff;
-    opacity: 0;
-    text-align: center;
-    animation: show 1.5s ease forwards;
-}
-
-#t1 { animation-delay: 0.6s; }
-#t2 { animation-delay: 2.2s; }
-#t3 { animation-delay: 4.0s; }
-#t4 { animation-delay: 6.0s; color: #ffb6c1; }
 
 @keyframes show {
-    0% { opacity: 0; transform: scale(0.9); }
-    100% { opacity: 1; transform: scale(1); }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 </style>
 </head>
 <body>
 <div class="scene">
-    <div id="t1" class="text">Sorry</div>
-    <div id="t2" class="text">I want to see you in every time</div>
-    <div id="t3" class="text">I am really sorry</div>
-    <div id="t4" class="text">I love you sona ❤️</div>
 
-    <div class="domino-container">
-        <div class="domino"></div>
-        <div class="domino"></div>
-        <div class="domino"></div>
-        <div class="domino"></div>
-        <div class="domino"></div>
-        <div class="domino"></div>
-        <div class="domino"></div>
-        <div class="domino"></div>
-        <div class="domino"></div>
-        <div class="domino"></div>
-    </div>
+<!-- SORRY -->
+<div class="word">
+  <div class="letter"> <!-- S -->
+    <div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div>
+    <div class="domino"></div><div class="domino empty"></div><div class="domino empty"></div><div class="domino empty"></div><div class="domino empty"></div>
+    <div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div>
+  </div>
+</div>
+
+<!-- I WANT TO SEE YOU IN EVERY TIME -->
+<div class="word">
+  <div class="letter">
+    <div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div>
+    <div class="domino"></div><div class="domino empty"></div><div class="domino empty"></div><div class="domino empty"></div><div class="domino"></div>
+    <div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div>
+  </div>
+</div>
+
+<!-- I AM REALLY SORRY -->
+<div class="word">
+  <div class="letter">
+    <div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div>
+    <div class="domino empty"></div><div class="domino"></div><div class="domino empty"></div><div class="domino"></div><div class="domino empty"></div>
+    <div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div>
+  </div>
+</div>
+
+<!-- I LOVE YOU SONA -->
+<div class="word">
+  <div class="letter">
+    <div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div>
+    <div class="domino"></div><div class="domino empty"></div><div class="domino empty"></div><div class="domino empty"></div><div class="domino"></div>
+    <div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div><div class="domino"></div>
+  </div>
+</div>
+
 </div>
 </body>
 </html>
