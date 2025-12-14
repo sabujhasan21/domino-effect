@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit.components.v1 import html
 
-st.set_page_config(page_title="Still Beating", layout="wide")
+st.set_page_config(page_title="Still Beating – Clean", layout="wide")
 
 html_content = """
 <!DOCTYPE html>
@@ -18,9 +18,6 @@ html, body {
 #scene {
   position: fixed;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 svg {
   width: 100%;
@@ -28,9 +25,9 @@ svg {
 }
 #pulse {
   fill: none;
-  stroke: #ff8fa3;
+  stroke: #ff9bb5;
   stroke-width: 2;
-  filter: drop-shadow(0 0 12px rgba(255,143,163,0.6));
+  filter: drop-shadow(0 0 10px rgba(255,155,181,0.55));
 }
 #text {
   position: absolute;
@@ -38,24 +35,21 @@ svg {
   width: 100%;
   text-align: center;
   font-family: 'Segoe UI', sans-serif;
-  color: #ffdbe7;
 }
-#line1 {
-  font-size: 22px;
+.line {
+  font-size: 24px;
+  color: #ffdbe7;
   opacity: 0;
+  transition: opacity 2.5s ease;
 }
 #line2 {
   font-size: 32px;
   font-weight: 700;
-  opacity: 0;
-  margin-top: 6px;
+  color: #ff8fa8;
+  margin-top: 8px;
 }
-.fade-in {
-  animation: fade 3s forwards;
-}
-@keyframes fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.show {
+  opacity: 1;
 }
 </style>
 </head>
@@ -65,8 +59,8 @@ svg {
     <path id="pulse" />
   </svg>
   <div id="text">
-    <div id="line1">I am Sorry, Please I want you in every time.</div>
-    <div id="line2">I love you sona</div>
+    <div id="line1" class="line">I am Sorry, Please I want you in every time.</div>
+    <div id="line2" class="line">I love you sona</div>
   </div>
 </div>
 
@@ -80,37 +74,40 @@ const beep = document.getElementById('beep');
 const l1 = document.getElementById('line1');
 const l2 = document.getElementById('line2');
 
-let start = null;
-function animate(ts){
-  if(!start) start = ts;
-  const t = ts - start;
+let x = 0;
+let flatTime = 0;
+let phase = 'flat';
 
-  // 4s flatline
-  if(t < 4000){
-    path.setAttribute('d', 'M0 200 L1200 200');
-  }
-  // spike + love curve
-  else if(t < 9000){
-    path.setAttribute('d',
-      'M0 200 L420 200 ' +
-      'L450 200 L470 120 L490 280 L510 200 ' +
-      'C550 150 620 150 680 200 ' +
-      'C740 250 810 250 870 200 ' +
-      'L1200 200'
-    );
-    document.body.style.background = '#050014';
-    if(beep.paused){ beep.volume = 0.12; beep.play(); }
-    l1.classList.add('fade-in');
-    setTimeout(()=>l2.classList.add('fade-in'),1200);
-  }
-  // hold
-  else {
-    path.setAttribute('d', path.getAttribute('d'));
+function draw(){
+  let d = 'M0 200 ';
+
+  if(phase === 'flat'){
+    d += `L${x} 200`;
+    flatTime++;
+    if(flatTime > 240){ // ~4s
+      phase = 'spike';
+      beep.volume = 0.12;
+      beep.play();
+      setTimeout(()=>l1.classList.add('show'),1000);
+      setTimeout(()=>l2.classList.add('show'),3000);
+    }
   }
 
-  requestAnimationFrame(animate);
+  if(phase === 'spike'){
+    d += `L${x-40} 200 ` +
+         `L${x-30} 140 ` +
+         `L${x-20} 260 ` +
+         `L${x-10} 200 `;
+  }
+
+  path.setAttribute('d', d);
+  x += 6;
+
+  if(x > 1200){ x = 0; flatTime = 0; phase = 'flat'; l1.classList.remove('show'); l2.classList.remove('show'); }
+
+  requestAnimationFrame(draw);
 }
-requestAnimationFrame(animate);
+requestAnimationFrame(draw);
 </script>
 </body>
 </html>
