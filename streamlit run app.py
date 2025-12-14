@@ -1,92 +1,100 @@
 import streamlit as st
 from streamlit.components.v1 import html
 
-st.set_page_config(page_title="Heartbeat Text", layout="wide")
+st.set_page_config(page_title="Glowing Love Spike", layout="wide")
 
 st.markdown("""
 <style>
 body {
-    background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
+    background: radial-gradient(circle at top, #0b1020, #060814);
 }
 .main-title {
-    font-size: 3rem;
+    font-size: 2.6rem;
     font-weight: 800;
     text-align: center;
-    color: #ffffff;
-    margin-bottom: 0.5rem;
+    color: #ffd1dc;
+    margin-bottom: 0.3rem;
 }
 .sub {
     text-align: center;
-    color: #c7d2fe;
+    color: #a5b4fc;
     margin-bottom: 2rem;
 }
-.container {
+.wrap {
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 60px;
 }
 .card {
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(12px);
-    border-radius: 24px;
-    padding: 40px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(14px);
+    border-radius: 28px;
+    padding: 40px 60px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.45);
 }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="main-title">❤️ Heartbeat Text Generator</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub">Heart theke ber hobe ECG spike → oi spike diye text border draw hobe</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-title">💗 For You</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub">Soft glowing spike → love shape → emotion</div>', unsafe_allow_html=True)
 
-text = st.text_input("Text dao", "LOVE")
-
-svg_html = f"""
-<div class="container">
+svg_html = """
+<div class="wrap">
   <div class="card">
-    <svg width="600" height="300" viewBox="0 0 600 300">
-      <!-- Heart -->
-      <image href="https://upload.wikimedia.org/wikipedia/commons/8/88/Heart_anatomy_icon.svg"
-             x="10" y="60" width="140" height="140" />
+    <svg width="700" height="360" viewBox="0 0 700 360">
 
-      <!-- ECG path -->
-      <path id="ecg"
-        d="M150 150 L200 150 L220 120 L240 190 L260 150 L300 150"
-        fill="none" stroke="#ff4d6d" stroke-width="4">
-        <animate attributeName="stroke-dasharray"
-          from="0,500" to="500,0" dur="1.5s" repeatCount="indefinite" />
+      <!-- Glowing ECG line -->
+      <path id="pulse"
+        d="M50 180 L150 180 L180 130 L210 240 L240 180 L300 180
+           C320 140 360 140 380 180
+           C400 220 440 220 460 180
+           L560 180"
+        fill="none"
+        stroke="#ff5c8a"
+        stroke-width="4"
+        filter="url(#glow)"
+        stroke-dasharray="6 10">
+        <animate attributeName="stroke-dashoffset"
+          from="0" to="-200" dur="2s" repeatCount="indefinite" />
       </path>
 
-      <!-- Text path -->
+      <!-- Glow effect -->
       <defs>
-        <path id="textBorder"
-          d="M320 80 Q420 20 520 80 Q580 150 520 220 Q420 280 320 220 Q260 150 320 80 Z" />
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="4" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
       </defs>
 
-      <text font-size="32" fill="#ffffff" font-weight="700">
-        <textPath href="#textBorder" startOffset="0%">
-          {text} • {text} • {text} • {text} •
-          <animate attributeName="startOffset" from="0%" to="100%" dur="6s" repeatCount="indefinite" />
-        </textPath>
+      <!-- Love text -->
+      <text x="350" y="290" text-anchor="middle"
+            font-size="26" font-weight="600" fill="#ffe4e6">
+        I am Sorry, Please I want you in every time.
       </text>
+      <text x="350" y="325" text-anchor="middle"
+            font-size="28" font-weight="800" fill="#ff8fab">
+        I love you sona
+      </text>
+
     </svg>
   </div>
 </div>
 """
 
-html(svg_html, height=360)
+html(svg_html, height=420)
 
 st.markdown("""
 ---
-### Features
-- ❤️ Heart left side e
-- 📈 Heartbeat (ECG) spike animation
-- ✍️ ECG flow theke text border create
-- ✨ Glassmorphism modern UI
+### Animation Meaning
+- 💫 Soft glowing moving spike
+- 💓 Middle e spike naturally **love curve** banay
+- ❤️ Emotion-focused minimal design
 
-Next step e ami chaile:
-- Real audio-synced heartbeat
-- Custom font & color picker
-- SVG export / video export
-- Mobile responsive version
+Chaile ami aro add korte pari:
+- Pulse speed emotion wise
+- Typing text animation
+- Background floating particles
+- Auto full-screen love intro
 """)
