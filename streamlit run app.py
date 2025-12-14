@@ -1,8 +1,7 @@
 import streamlit as st
 from streamlit.components.v1 import html
 
-st.set_page_config(page_title="🎥 Domino Chain + Camera Move", layout="wide")
-
+st.set_page_config(page_title="🎥 Domino Chain – Clear Text View", layout="wide")n
 html_code = """
 <!DOCTYPE html>
 <html>
@@ -15,35 +14,34 @@ html,body{
 }
 .scene{
   width:100vw; height:100vh;
-  perspective:1400px;
-  overflow:hidden;
+  perspective:1600px;
 }
 .camera{
   width:100%; height:100%;
   transform-style: preserve-3d;
-  animation: cameraMove 16s ease-in-out forwards;
+  animation: cameraMove 18s ease-in-out forwards;
 }
 .board{
   display:grid;
-  grid-template-columns: repeat(60, 18px);
-  gap:6px;
-  transform: rotateX(70deg) translateY(200px);
+  grid-template-columns: repeat(60, 22px);
+  gap:10px;
+  transform: rotateX(65deg) translateY(260px);
 }
 .domino{
-  width:18px; height:60px;
-  background: linear-gradient(135deg,#fff,#ccc,#999);
-  border-radius:4px;
-  box-shadow:0 10px 20px rgba(0,0,0,.7);
+  width:22px; height:70px;
+  background: linear-gradient(135deg,#ffffff,#d9d9d9,#bfbfbf);
+  border-radius:6px;
+  box-shadow:0 14px 26px rgba(0,0,0,.8);
   transform-origin: bottom center;
 }
-.domino.fall{ animation: fall .6s ease forwards; }
-@keyframes fall{ to{ transform: rotateX(-85deg); } }
+.domino.fall{ animation: fall .7s ease forwards; }
+@keyframes fall{ to{ transform: rotateX(-90deg); } }
 .empty{ visibility:hidden; }
 
 @keyframes cameraMove{
   0%{ transform: translateZ(0px); }
-  60%{ transform: translateZ(300px); }
-  100%{ transform: rotateX(90deg) translateZ(400px); }
+  55%{ transform: translateZ(380px); }
+  100%{ transform: rotateX(90deg) translateZ(520px); }
 }
 </style>
 </head>
@@ -54,18 +52,22 @@ html,body{
   </div>
 </div>
 <script>
+// CLEAN BIG LETTER PATTERN
 const pattern = [
-"1111101111101111000111110",
-"1000001000101000100000010",
-"1111101111101111000111110",
-"0000100000100000100000100",
-"1111101111101111000111110",
+// SORRY
+"1111100000111110000011111",
+"1000000000100010000010000",
+"1111100000111110000011111",
+"0000100000000010000000001",
+"1111100000111110000011111",
+// SPACE
 "0000000000000000000000000",
-"11111001001011110001011111001001011110",
-"00100001001010000001010000001001010000",
-"00100001001011100001011100001001011100",
-"00100001001010000001010000001001010000",
-"11111011111011110001011111011111011110"
+// I LOVE YOU SONA
+"111110001000111110001011111000100011111",
+"001000001000100000001010000001000100000",
+"001000001000111100001011110001000111100",
+"001000001000100000001010000001000100000",
+"111110001000111110001011111001000111110"
 ];
 
 const board = document.getElementById('board');
@@ -77,7 +79,7 @@ pattern.forEach(row=>{
     if(cell==='1'){
       d.className='domino';
       setTimeout(()=>d.classList.add('fall'),delay);
-      delay+=60;
+      delay+=80;
     } else {
       d.className='domino empty';
     }
