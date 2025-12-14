@@ -1,91 +1,103 @@
 import streamlit as st
 from streamlit.components.v1 import html
 
-st.set_page_config(page_title="🎥 Domino Chain – Clear Text View", layout="wide")n
+st.set_page_config(page_title="❤️ Heart ECG Text Animation ❤️", layout="wide")
+
 html_code = """
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset='UTF-8'>
+<meta charset="UTF-8">
+<title>Heart ECG Text Animation</title>
 <style>
-html,body{
-  margin:0; padding:0; width:100%; height:100%; overflow:hidden;
-  background:#000;
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
 }
-.scene{
-  width:100vw; height:100vh;
-  perspective:1600px;
+#container {
+    position: relative;
+    width: 80vw;
+    height: 80vh;
 }
-.camera{
-  width:100%; height:100%;
-  transform-style: preserve-3d;
-  animation: cameraMove 18s ease-in-out forwards;
+svg {
+    width: 100%;
+    height: 100%;
 }
-.board{
-  display:grid;
-  grid-template-columns: repeat(60, 22px);
-  gap:10px;
-  transform: rotateX(65deg) translateY(260px);
+#text-display {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 60%;
+    color: #ff4d6d;
+    font-size: 3vw;
+    font-weight: bold;
+    text-shadow: 0 0 10px #ff4d6d;
 }
-.domino{
-  width:22px; height:70px;
-  background: linear-gradient(135deg,#ffffff,#d9d9d9,#bfbfbf);
-  border-radius:6px;
-  box-shadow:0 14px 26px rgba(0,0,0,.8);
-  transform-origin: bottom center;
-}
-.domino.fall{ animation: fall .7s ease forwards; }
-@keyframes fall{ to{ transform: rotateX(-90deg); } }
-.empty{ visibility:hidden; }
-
-@keyframes cameraMove{
-  0%{ transform: translateZ(0px); }
-  55%{ transform: translateZ(380px); }
-  100%{ transform: rotateX(90deg) translateZ(520px); }
+@keyframes wave {
+    0% { stroke-dashoffset: 1000; }
+    100% { stroke-dashoffset: 0; }
 }
 </style>
 </head>
 <body>
-<div class='scene'>
-  <div class='camera'>
-    <div class='board' id='board'></div>
-  </div>
+<div id="container">
+<svg viewBox="0 0 800 600">
+  <!-- Heart Shape Path -->
+  <path id="heart" fill="none" stroke="#ff4d6d" stroke-width="4"
+        d="M400,300
+           C400,200 600,200 600,300
+           C600,400 400,500 400,600
+           C400,500 200,400 200,300
+           C200,200 400,200 400,300"
+        stroke-dasharray="1000" stroke-dashoffset="1000"></path>
+
+  <!-- ECG-like Wave -->
+  <path id="wave" fill="none" stroke="#ff4d6d" stroke-width="3"
+        d="M0,300 Q50,250 100,300 T200,300 T300,300 T400,300 T500,300 T600,300 T700,300 T800,300"
+        stroke-dasharray="1000" stroke-dashoffset="1000"></path>
+</svg>
+<div id="text-display"></div>
 </div>
 <script>
-// CLEAN BIG LETTER PATTERN
-const pattern = [
-// SORRY
-"1111100000111110000011111",
-"1000000000100010000010000",
-"1111100000111110000011111",
-"0000100000000010000000001",
-"1111100000111110000011111",
-// SPACE
-"0000000000000000000000000",
-// I LOVE YOU SONA
-"111110001000111110001011111000100011111",
-"001000001000100000001010000001000100000",
-"001000001000111100001011110001000111100",
-"001000001000100000001010000001000100000",
-"111110001000111110001011111001000111110"
+const heart = document.getElementById('heart');
+const wave = document.getElementById('wave');
+const textDisplay = document.getElementById('text-display');
+
+// Animate heart draw
+heart.style.transition = "stroke-dashoffset 3s ease-in-out";
+heart.style.strokeDashoffset = 0;
+
+// Animate wave after heart
+setTimeout(()=>{
+    wave.style.transition = "stroke-dashoffset 3s linear";
+    wave.style.strokeDashoffset = 0;
+}, 3000);
+
+// Sequential text display
+const messages = [
+    "SORRY",
+    "I WANT TO SEE YOU",
+    "I AM REALLY SORRY",
+    "I LOVE YOU SONA ❤️"
 ];
+let idx = 0;
 
-const board = document.getElementById('board');
-let delay = 0;
-
-pattern.forEach(row=>{
-  [...row].forEach(cell=>{
-    const d = document.createElement('div');
-    if(cell==='1'){
-      d.className='domino';
-      setTimeout(()=>d.classList.add('fall'),delay);
-      delay+=80;
-    } else {
-      d.className='domino empty';
+function showText(){
+    if(idx < messages.length){
+        textDisplay.textContent = messages[idx];
+        idx++;
+        setTimeout(showText, 3000);
     }
-    board.appendChild(d);
-  });
-});
+}
+setTimeout(showText, 3500); // start after heart and wave begin
 </script>
 </body>
 </html>
